@@ -1,0 +1,5 @@
+@import '../../style/partials/mixins.scss';
+
+.game_btn{
+    @include game_button;
+}
