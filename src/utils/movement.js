@@ -9,7 +9,7 @@ export default function changePosition(key, currPosition, cellsX){
         case 'd':
             return currPosition + 1;
         case 's':
-            return currPosition += cellsX;
+            return currPosition + cellsX;
         case 'a':
             return currPosition - 1;
         default: return currPosition;

@@ -28,13 +28,8 @@ function App() {
             y: 10
           },
           walls: [],
-          // I bordi saranno riempiti da una funzione in app
-          borders: {
-            up: [],
-            right: [],
-            down: [],
-            left: []
-          },
+          // I bordi di ogni lato saranno riempiti da una funzione in app
+          borders: {},
           start: 0,
           end: 99,
           userPosition: 0,

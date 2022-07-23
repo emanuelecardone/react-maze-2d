@@ -2,21 +2,35 @@ import './style.scss';
 import { useContext, useEffect } from 'react';
 import { DataContext } from '../../App';
 import changePosition from '../../utils/movement';
+import defineBorders from '../../utils/borders';
 
 const Game = () => {
 
     const datas = useContext(DataContext);
     const [gameData, setGameData] = datas;
     const {displayStatus, levels, user: {currentLevel}} = gameData;
-    const {cells: {tot, x, y}} = levels[currentLevel];
-    const {userPosition} = levels[currentLevel];
+    const {borders, userPosition, cells: {tot, x, y}} = levels[currentLevel];
     let userTrack = userPosition;
+    let bordersTrack = borders;
     
-    // Funzione per calcolare i bordi in base alla griglia attuale 
-    // Prende il numero totale di celle, quello sull'asse x e asse y
-    // Poi pusha ogni linea di bordi in un'array che aggiornerà il gameData di App
+    // Funzione cambio bordi
     const getBorders = () => {
-        
+        // Funzione presa da utils
+        bordersTrack = defineBorders(tot, x); 
+        // Aggiornamento globale
+        setGameData(
+            {
+                ...gameData,
+                levels: [
+                    ...levels,
+                    levels[currentLevel] = {
+                        ...levels[currentLevel],
+                        borders: bordersTrack
+                    }
+                ]
+            }
+        );
+        console.log(gameData);
     }
 
     // Funzione movimento personaggio
@@ -39,12 +53,13 @@ const Game = () => {
     }
 
     // Questo useEffect toglie (per reset) e rimette l'evento per il movimento 
-    // ad ogni cambio del display di game
+    // ad ogni cambio del display di game (più calcolo bordi livello attuale)
     useEffect(
         () => {
             window.removeEventListener('keyup', moveCharacter);
             if(displayStatus.game){
                 window.addEventListener('keyup', moveCharacter);
+                getBorders();
             }
         },
         [displayStatus.game]
