@@ -27,7 +27,7 @@ function App() {
             x: 10,
             y: 10
           },
-          walls: [],
+          walls: [20,21,22,23,26,27],
           // I bordi di ogni lato saranno riempiti da una funzione in app
           borders: {},
           start: 0,

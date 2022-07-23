@@ -10,11 +10,13 @@ const Game = () => {
     const datas = useContext(DataContext);
     const [gameData, setGameData] = datas;
     const {displayStatus, levels, user: {currentLevel}} = gameData;
-    const {borders, userPosition, cells: {tot, x, y}} = levels[currentLevel];
-    let userTrack = 0;
+    const {borders, walls, userPosition, cells: {tot, x, y}} = levels[currentLevel];
+    let userTrack = userPosition;
+    let bordersTrack;
     
     // Funzione cambio bordi
     const getBorders = () => {
+        bordersTrack = defineBorders(tot, x);
         // Aggiornamento globale
         setGameData(
             {
@@ -22,7 +24,7 @@ const Game = () => {
                 levels: [
                     levels[currentLevel] = {
                         ...levels[currentLevel],
-                        borders: defineBorders(tot, x)
+                        borders: bordersTrack
                     }
                 ]
             }
@@ -31,7 +33,7 @@ const Game = () => {
 
     // Funzione movimento personaggio
     const moveCharacter = (e) => {
-        userTrack = changePosition(e.key, userTrack, x);
+        userTrack = changePosition(e.key, userTrack, x, bordersTrack, walls);
         // Aggiornamento globale
         setGameData(
             {
