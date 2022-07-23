@@ -1,5 +1,5 @@
 import './style.scss';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { DataContext } from '../../App';
 import User from '../User';
 
@@ -7,8 +7,8 @@ const Cell = ({index}) => {
 
     const datas = useContext(DataContext);
     const [gameData, setGameData] = datas;
-    const {levels, user: {currentLevel}} = gameData;
-    const {userPosition, start, end, walls, cells: {x,y}} = levels[currentLevel];
+    const {levels: {list}, user: {currentLevel}} = gameData;
+    const {userPosition, start, end, walls, cells: {x,y}} = list[currentLevel];
 
     // Classe da dare alla cella in base a cosa contiente
     let cellStyle;

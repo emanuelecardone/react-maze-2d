@@ -3,7 +3,9 @@ import './style.scss';
 import { useContext } from 'react';
 import { DataContext } from '../../App';
 
-const Button = ({message, sections}) => {
+// Il change è per il gameover, se è true è perché l'utente ha premuto next level, 
+// quindi deve cambiare il lv attuale
+const Button = ({message, sections, change = false}) => {
 
     const datas = useContext(DataContext);
     const [gameData, setGameData] = datas;
@@ -15,12 +17,19 @@ const Button = ({message, sections}) => {
         // La funzione fa un oggetto copia del display e prende i valori di sections
         // Il primo diventa false, il secondo true e poi il setGameData aggiorna copiando il newDisplay
         const newDisplay = {...gameData.displayStatus}
+        let newLevel = gameData.user.currentLevel;
         newDisplay[`${sections[0]}`] = false;
         newDisplay[`${sections[1]}`] = true;
+        if(change){
+            newLevel++;
+        }
         setGameData(
             {
                 ...gameData,
-                displayStatus: {...newDisplay}
+                displayStatus: {...newDisplay},
+                user: {
+                    currentLevel: newLevel
+                }
             }
         );
     }

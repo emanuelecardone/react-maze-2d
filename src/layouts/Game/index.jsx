@@ -3,17 +3,15 @@ import { useContext, useEffect } from 'react';
 import { DataContext } from '../../App';
 import Grid from '../Grid';
 import changePosition from '../../utils/movement';
-import defineBorders from '../../utils/borders';
 
 const Game = () => {
 
     const datas = useContext(DataContext);
     const [gameData, setGameData] = datas;
-    const {displayStatus, levels, user: {currentLevel}} = gameData;
-    const {borders, walls, end, start, userPosition, cells: {tot, x, y}} = levels[currentLevel];
-    let userTrack;
-    let bordersTrack;
-    let currentLevelTrack;
+    const {displayStatus, levels: {list}, user: {currentLevel}} = gameData;
+    const {borders, walls, end, start, userPosition, cells: {tot, x, y}} = list[currentLevel];
+
+    let userTrack = start;
     // Per non permettere il movimento utente in quel secondo che passa fino alla schermata gameover
     let gameOverDelay = false;
     // Clock gameover
@@ -38,36 +36,19 @@ const Game = () => {
             }, 1000);
         }
     }
-    
-    // Funzione cambio bordi
-    const getBorders = () => {
-        bordersTrack = defineBorders(tot, x);
-        // Aggiornamento globale
-        setGameData(
-            {
-                ...gameData,
-                levels: [
-                    levels[currentLevel] = {
-                        ...levels[currentLevel],
-                        borders: bordersTrack
-                    }
-                ]
-            }
-        );
-    }
 
     // Funzione movimento personaggio
     const moveCharacter = (e) => {
         // Questa if evita il movimento per 1s fino al gameover
         if(!gameOverDelay){
-            userTrack = changePosition(e.key, userTrack, x, bordersTrack, walls);
+            userTrack = changePosition(e.key, userTrack, x, borders, walls);
             // Aggiornamento globale
             setGameData(
                 {
                     ...gameData,
-                    levels: [
-                        levels[currentLevel] = {
-                            ...levels[currentLevel],
+                    list: [
+                        list[currentLevel] = {
+                            ...list[currentLevel],
                             userPosition: userTrack
                         }
                     ]
@@ -85,16 +66,15 @@ const Game = () => {
         setGameData(
             {
                 ...gameData,
-                levels: [
-                    levels[currentLevel] = {
-                        ...levels[currentLevel],
-                        userPosition: levels[currentLevel].start
+                list: [
+                    list[currentLevel] = {
+                        ...list[currentLevel],
+                        userPosition: list[currentLevel].start
                     }
                 ]
             }
         );
     }
-
     // Questo useEffect toglie (per reset) e rimette l'evento per il movimento 
     // ad ogni cambio del display di game (più calcolo bordi livello attuale)
     useEffect(
@@ -102,7 +82,6 @@ const Game = () => {
             window.removeEventListener('keyup', moveCharacter);
             if(displayStatus.game){
                 window.addEventListener('keyup', moveCharacter);
-                getBorders();
                 resetGame();
             }
         },
@@ -115,6 +94,8 @@ const Game = () => {
             <Grid cells={tot} />
         </div>
     );
+        
+    
 }
 
 export default Game;

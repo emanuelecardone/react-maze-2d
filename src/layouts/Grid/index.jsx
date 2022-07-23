@@ -5,7 +5,7 @@ const Grid = ({cells}) => {
 
     const cellsArray = [];
     for(let i = 0; i < cells; i++){
-        cellsArray.push(<Cell index={i} key={i} />)
+        cellsArray.push(<Cell index={i} key={'cell-' + i} />)
     }
 
     // Griglia di gioco che stampa le celle in base al livello attuale
