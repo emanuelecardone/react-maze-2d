@@ -8,10 +8,16 @@ const Cell = ({index}) => {
     const datas = useContext(DataContext);
     const [gameData, setGameData] = datas;
     const {levels, user: {currentLevel}} = gameData;
-    const {userPosition, walls, cells: {x,y}} = levels[currentLevel];
+    const {userPosition, start, end, walls, cells: {x,y}} = levels[currentLevel];
 
-    const testFunc = () => {
-        console.log(gameData);
+    // Classe da dare alla cella in base a cosa contiente
+    let cellStyle;
+    if(walls.includes(index)){
+        cellStyle = 'white';
+    } else if(index === start){
+        cellStyle = 'cyan';
+    } else if(index === end){
+        cellStyle = 'lime';
     }
 
     // Per facilitare la build, se la cella non stampa l'user stampa l'index
@@ -20,14 +26,12 @@ const Cell = ({index}) => {
     // Ogni cella prenderà width e height in base a x,y 
     // (in style.scss ci sono gli stili per ogni tipo di cella)
     if(userPosition === index){
-        return <div onClick={testFunc} className={`cell cell-${x}-${y}`}>
-            <User />
-        </div>
+        return <div className={`cell cell-${x}-${y}`} style={{backgroundColor: cellStyle}}><User /></div>
     }
-    return <div onClick={testFunc} className={`cell cell-${x}-${y}`} 
-    style={{backgroundColor: walls.includes(index) ? 'white' : 'transparent'}}>
-        <span>{index}</span>
-    </div>
+    return <div className={`cell cell-${x}-${y}`} style={{backgroundColor: cellStyle}}>
+                {/* Span per sapere l'index delle celle nel building */}
+                {/* <span>{index}</span> */}
+            </div>
 }
 
 export default Cell;

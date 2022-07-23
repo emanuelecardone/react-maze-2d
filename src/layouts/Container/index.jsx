@@ -2,6 +2,7 @@ import './style.scss';
 import Welcome from "../Welcome";
 import Tutorial from '../Tutorial';
 import Game from '../Game';
+import GameOver from '../GameOver';
 import { useContext } from 'react';
 import { DataContext } from '../../App';
 
@@ -20,6 +21,8 @@ const Container = () => {
         return <Tutorial />
     } else if(displayStatus.game){
         return <Game />
+    } else if(displayStatus.gameOver){
+        return <GameOver />
     }
 }
 

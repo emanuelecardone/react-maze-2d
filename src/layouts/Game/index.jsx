@@ -10,9 +10,34 @@ const Game = () => {
     const datas = useContext(DataContext);
     const [gameData, setGameData] = datas;
     const {displayStatus, levels, user: {currentLevel}} = gameData;
-    const {borders, walls, userPosition, cells: {tot, x, y}} = levels[currentLevel];
-    let userTrack = userPosition;
+    const {borders, walls, end, start, userPosition, cells: {tot, x, y}} = levels[currentLevel];
+    let userTrack;
     let bordersTrack;
+    let currentLevelTrack;
+    // Per non permettere il movimento utente in quel secondo che passa fino alla schermata gameover
+    let gameOverDelay = false;
+    // Clock gameover
+    let gameOverClock;
+
+    // Funzione che controlla la cella attuale (per il gameOver)
+    // Per 1s impedisce il movimento, poi stampa il gameOver
+    const checkCell = () => {
+        if(userTrack === end){
+            gameOverDelay = true;
+            gameOverClock = setTimeout(() => {
+                setGameData(
+                    {
+                        ...gameData,
+                        displayStatus: {
+                            ...displayStatus,
+                            game: false,
+                            gameOver: true
+                        }
+                    }
+                );
+            }, 1000);
+        }
+    }
     
     // Funzione cambio bordi
     const getBorders = () => {
@@ -33,15 +58,37 @@ const Game = () => {
 
     // Funzione movimento personaggio
     const moveCharacter = (e) => {
-        userTrack = changePosition(e.key, userTrack, x, bordersTrack, walls);
-        // Aggiornamento globale
+        // Questa if evita il movimento per 1s fino al gameover
+        if(!gameOverDelay){
+            userTrack = changePosition(e.key, userTrack, x, bordersTrack, walls);
+            // Aggiornamento globale
+            setGameData(
+                {
+                    ...gameData,
+                    levels: [
+                        levels[currentLevel] = {
+                            ...levels[currentLevel],
+                            userPosition: userTrack
+                        }
+                    ]
+                }
+            );
+            checkCell();
+        }
+    }
+
+    // Reset per il gameover
+    const resetGame = () => {
+        gameOverDelay = false;
+        userTrack = start;
+        // Lega la posizione di partenza dell'user a quella start
         setGameData(
             {
                 ...gameData,
                 levels: [
                     levels[currentLevel] = {
                         ...levels[currentLevel],
-                        userPosition: userTrack
+                        userPosition: levels[currentLevel].start
                     }
                 ]
             }
@@ -56,6 +103,7 @@ const Game = () => {
             if(displayStatus.game){
                 window.addEventListener('keyup', moveCharacter);
                 getBorders();
+                resetGame();
             }
         },
         [displayStatus.game]
