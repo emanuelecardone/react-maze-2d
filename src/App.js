@@ -17,6 +17,33 @@ function App() {
         welcome: true,
         tutorial: false,
         game: false
+      },
+      // Array con le info sui livelli
+      levels: [
+        {
+          id: 1,
+          cells: {
+            tot: 100,
+            x: 10,
+            y: 10
+          },
+          walls: [],
+          // I bordi saranno riempiti da una funzione in app
+          borders: {
+            up: [],
+            right: [],
+            down: [],
+            left: []
+          },
+          start: 0,
+          end: 99,
+          userPosition: 0,
+          unlocked: true
+        }
+      ],
+      // Oggetto info utente
+      user: {
+        currentLevel: 0
       }
     }
   );
