@@ -1,6 +1,7 @@
 import './style.scss';
 import { useContext, useEffect } from 'react';
 import { DataContext } from '../../App';
+import Grid from '../Grid';
 import changePosition from '../../utils/movement';
 import defineBorders from '../../utils/borders';
 
@@ -10,39 +11,32 @@ const Game = () => {
     const [gameData, setGameData] = datas;
     const {displayStatus, levels, user: {currentLevel}} = gameData;
     const {borders, userPosition, cells: {tot, x, y}} = levels[currentLevel];
-    let userTrack = userPosition;
-    let bordersTrack = borders;
+    let userTrack = 0;
     
     // Funzione cambio bordi
     const getBorders = () => {
-        // Funzione presa da utils
-        bordersTrack = defineBorders(tot, x); 
         // Aggiornamento globale
         setGameData(
             {
                 ...gameData,
                 levels: [
-                    ...levels,
                     levels[currentLevel] = {
                         ...levels[currentLevel],
-                        borders: bordersTrack
+                        borders: defineBorders(tot, x)
                     }
                 ]
             }
         );
-        console.log(gameData);
     }
 
     // Funzione movimento personaggio
     const moveCharacter = (e) => {
-        // Funzione presa da utils
         userTrack = changePosition(e.key, userTrack, x);
         // Aggiornamento globale
         setGameData(
             {
                 ...gameData,
                 levels: [
-                    ...levels,
                     levels[currentLevel] = {
                         ...levels[currentLevel],
                         userPosition: userTrack
@@ -67,10 +61,8 @@ const Game = () => {
 
     // Il Game è la sezione del gioco vero e proprio
     return(
-        <div className='game custom_section'>
-            <div className='grid w-100 h-100'>
-
-            </div>
+        <div className='game custom_section p-0'>
+            <Grid cells={tot} />
         </div>
     );
 }
