@@ -1,4 +1,5 @@
 import './style.scss';
+import PropTypes from 'prop-types';
 import Cell from '../../components/Cell';
 
 const Grid = ({cells}) => {
@@ -14,6 +15,10 @@ const Grid = ({cells}) => {
             {cellsArray}
         </div>
     );
+}
+
+Grid.propTypes = {
+    cells: PropTypes.number.isRequired
 }
 
 export default Grid;

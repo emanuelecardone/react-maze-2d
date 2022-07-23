@@ -1,4 +1,5 @@
 import './style.scss';
+import PropTypes from 'prop-types';
 import { useContext, useEffect } from 'react';
 import { DataContext } from '../../App';
 import User from '../User';
@@ -32,6 +33,10 @@ const Cell = ({index}) => {
                 {/* Span per sapere l'index delle celle nel building */}
                 {/* <span>{index}</span> */}
             </div>
+}
+
+Cell.propTypes = {
+    index: PropTypes.number.isRequired
 }
 
 export default Cell;

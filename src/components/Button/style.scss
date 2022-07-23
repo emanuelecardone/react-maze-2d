@@ -2,4 +2,11 @@
 
 .game_btn{
     @include game_button;
+
+    &:hover{
+        border-color: $primary_color;
+        color: $primary_color;
+        position: relative;
+        bottom: .2rem;
+    }
 }

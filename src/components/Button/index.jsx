@@ -40,7 +40,9 @@ const Button = ({message, sections, change = false}) => {
 }
 
 Button.propTypes = {
-    message: PropTypes.string.isRequired
+    message: PropTypes.string.isRequired,
+    sections: PropTypes.array.isRequired,
+    change: PropTypes.bool
 }
 
 export default Button;
