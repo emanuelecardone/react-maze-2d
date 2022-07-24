@@ -16,13 +16,12 @@ const Cell = ({index}) => {
     if(walls.includes(index)){
         cellStyle = 'white';
     } else if(index === start){
-        cellStyle = 'cyan';
+        cellStyle = 'blue';
     } else if(index === end){
         cellStyle = 'lime';
     }
 
-    // Per facilitare la build, se la cella non stampa l'user stampa l'index
-    // In fase di gioco stampa solo l'utente se la sua posizione è l'indice della cella
+    // la cella stampa solo se la sua posizione è l'indice della cella
     // I muri saranno sappresentati da uno sfondo bianco
     // Ogni cella prenderà width e height in base a x,y 
     // (in style.scss ci sono gli stili per ogni tipo di cella)
